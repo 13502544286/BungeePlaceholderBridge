@@ -50,18 +50,27 @@ Add the API dependency to your BungeeCord plugin:
 
 **Maven:**
 ```xml
-<dependency>
-    <groupId>com.mcplugin</groupId>
-    <artifactId>bpb-api</artifactId>
-    <version>1.0.0</version>
-    <scope>provided</scope>
-</dependency>
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>com.github.13502544286</groupId>
+        <artifactId>BungeePlaceholderBridge</artifactId>
+        <version>v2.0.0</version>
+        <scope>provided</scope>
+    </dependency>
+</dependencies>
 ```
 
 **Gradle:**
 ```groovy
 dependencies {
-    compileOnly 'com.mcplugin:bpb-api:1.0.0'
+    compileOnly 'com.github.13502544286.BungeePlaceholderBridge:BungeePlaceholderBridge:2.0.0'
 }
 ```
 
