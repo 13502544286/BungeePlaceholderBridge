@@ -1,0 +1,5 @@
+name: BungeePlaceholderBridge
+version: ${project.version}
+main: com.mcplugin.bpb.bungee.BungeePlugin
+author: MCPluginDev
+description: Reads placeholder values from Redis and provides %bpb_xxx% placeholders.

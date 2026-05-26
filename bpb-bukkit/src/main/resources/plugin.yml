@@ -1,0 +1,7 @@
+name: BungeePlaceholderBridge
+version: ${project.version}
+main: com.mcplugin.bpb.bukkit.BukkitPlugin
+author: MCPluginDev
+description: Uploads PlaceholderAPI values to Redis for BungeeCord proxy access.
+api-version: '1.16'
+depend: [PlaceholderAPI]

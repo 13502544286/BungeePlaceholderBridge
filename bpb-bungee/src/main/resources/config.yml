@@ -1,0 +1,8 @@
+# BungeePlaceholderBridge Bungee Proxy Configuration
+
+Redis:
+  Host: localhost
+  Port: 6379
+  Password: ''
+  SSL: false
+  Prefix: 'bpb'  # Must match the prefix used by Bukkit backend

@@ -1,0 +1,33 @@
+# BungeePlaceholderBridge Bukkit Backend Configuration
+
+# Redis connection
+Redis:
+  Host: localhost
+  Port: 6379
+  Password: ''
+  SSL: false
+  Prefix: 'bpb'  # Redis key prefix
+
+# This server's name (used as identifier in Redis)
+ServerName: 'lobby'
+
+# How often to upload placeholder values (seconds)
+UploadInterval: 5
+
+# How long uploaded values stay in Redis (seconds)
+# Should be > UploadInterval + 5 to prevent stale reads
+ExpireSeconds: 30
+
+# Placeholders to upload (without % prefix)
+# These will be available on Bungee as %bpb_xxx%
+Placeholders:
+  - 'player_name'
+  - 'player_displayname'
+  - 'player_health'
+  - 'player_max_health'
+  - 'vault_rank'
+  - 'vault_prefix'
+  - 'vault_suffix'
+  - 'player_level'
+  - 'essentials_nickname'
+  - 'world_name'
