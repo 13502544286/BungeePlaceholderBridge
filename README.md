@@ -191,6 +191,146 @@ Output JARs:
 
 ---
 
+# API Reference
+
+## `BpbAPI.getInstance()`
+
+Returns the singleton BpbAPI instance (set during BPB-Bungee startup).
+
+---
+
+## `replaceBpbPlaceholders(ProxiedPlayer player, String text)`
+
+Batch-replaces all `%bpb_xxx%` placeholders in a string.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `player` | `ProxiedPlayer` | Player to read placeholder values for |
+| `text` | `String` | Text containing `%bpb_xxx%` |
+
+**Returns:** `String` — Text with placeholders replaced. Unresolved placeholders remain as-is.
+
+```java
+String text = "Welcome %bpb_player_name%, Rank: %bpb_vault_rank%!";
+String result = BpbAPI.getInstance().replaceBpbPlaceholders(player, text);
+// "Welcome Steve, Rank: VIP!"
+```
+
+---
+
+## `getValue(ProxiedPlayer player, String placeholder)`
+
+Get a single placeholder value for a player.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `player` | `ProxiedPlayer` | The player |
+| `placeholder` | `String` | Placeholder name without `%` or `bpb_` prefix |
+
+**Returns:** `String` — The value, or `null` if not found.
+
+```java
+String rank = BpbAPI.getInstance().getValue(player, "vault_rank");
+// "VIP"
+```
+
+---
+
+## `getValue(UUID playerUUID, String placeholder)`
+
+Get a placeholder value by UUID (useful in async contexts).
+
+```java
+String name = BpbAPI.getInstance().getValue(player.getUniqueId(), "player_name");
+```
+
+---
+
+## `getValue(String playerUUID, String placeholder)`
+
+Get a placeholder value by string UUID.
+
+```java
+String health = BpbAPI.getInstance().getValue(player.getUniqueId().toString(), "player_health");
+```
+
+---
+
+## `resolveBpbPlaceholder(ProxiedPlayer player, String fullPlaceholder)`
+
+Resolve a single full `%bpb_xxx%` placeholder.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `player` | `ProxiedPlayer` | The player |
+| `fullPlaceholder` | `String` | Full placeholder like `"%bpb_player_name%"` |
+
+**Returns:** `String` — Resolved value, or the original placeholder if not found.
+
+```java
+String value = BpbAPI.getInstance().resolveBpbPlaceholder(player, "%bpb_player_name%");
+// "Steve"
+```
+
+---
+
+## `setValue(UUID playerUUID, String placeholder, String value, int expireSeconds)`
+
+Manually write a placeholder value to Redis (for plugin extensions).
+
+```java
+BpbAPI.getInstance().setValue(player.getUniqueId(), "custom_data", "hello", 60);
+```
+
+---
+
+## `deletePlayerValues(UUID playerUUID)`
+
+Delete all placeholder data for a player from Redis (called on disconnect).
+
+---
+
+## Full Example
+
+```java
+import com.mcplugin.bpb.api.BpbAPI;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Plugin;
+
+public class MyPlugin extends Plugin {
+
+    @Override
+    public void onEnable() {
+        if (getProxy().getPluginManager().getPlugin("BungeePlaceholderBridge") == null) {
+            getLogger().warning("BPB not found!");
+            return;
+        }
+    }
+
+    public void sendWelcome(ProxiedPlayer player) {
+        String template = "&7[&aWelcome&7] &b%bpb_player_name% &7| Rank: &e%bpb_vault_rank%";
+        String msg = BpbAPI.getInstance().replaceBpbPlaceholders(player, template);
+        player.sendMessage(msg);
+        // [Welcome] Steve | Rank: VIP
+    }
+
+    public void showStats(ProxiedPlayer player) {
+        String health = BpbAPI.getInstance().getValue(player, "player_health");
+        String max = BpbAPI.getInstance().getValue(player, "player_max_health");
+        player.sendMessage("Health: " + health + "/" + max);
+        // Health: 20/20
+    }
+}
+```
+
+## Tab List Example
+
+```java
+String header = "&7Online: &b%bpb_server_online%&7/&b%bpb_server_online_max%";
+String formatted = BpbAPI.getInstance().replaceBpbPlaceholders(player, header);
+// Online: 42/100
+```
+
 ## License
 
 MIT License
